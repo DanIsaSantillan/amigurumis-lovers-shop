@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amigurumi Lovers' Shop</title>
+  
+  <!-- CSS de Bootstrap 5  y BoostrapIcons-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧶</text></svg>">
+  
+  <!-- Tu CSS personalizado -->
+  <link rel="stylesheet" href="Atributos/css/styles.css">
+</head>
+<body>
+
+  <!-- 1. Navegación -->
+  <nav class="navbar navbar-dark bg-dark sticky-top py-2">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2 m-0" href="#">
+        <span>🧶</span> Amigurumi Lovers' Shop
+      </a>
+
+      <!-- Redes / Contacto -->
+      <div class="d-flex align-items-center gap-2">
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/marselinesantillan/" target="_blank" class="btn btn-sm text-white fw-bold" style="background-color: #E1306C;" title="Ver portafolio en Instagram">
+          <i class="bi bi-instagram"></i> <span class="d-none d-sm-inline ms-1">Instagram</span>
+        </a>
+        <!-- WhatsApp -->
+        <a href="https://api.whatsapp.com/send?phone=524493463574&text=%C2%A1Hola!%20Tengo%20una%20duda%20general%20sobre%20tus%20amigurumis." target="_blank" class="btn btn-success btn-sm fw-bold" title="Mándame mensaje por WhatsApp">
+          <i class="bi bi-whatsapp"></i> <span class="d-none d-sm-inline ms-1">Contacto</span>
+        </a>
+        <!-- Reseñas -->
+        <a href="#seccionComentarios" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
+          <span>💬</span> <span class="d-none d-sm-inline">Reseñas</span>
+        </a>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- 2. Encabezado -->
+  <header class="hero-header text-center py-5 mb-4">
+    <div class="container">
+      <h1 class="fw-light">¡Bienvenidos a mi tienda!</h1>
+      <p class="lead text-muted">Muñecos tejidos con amor a crochet.</p>
+      <div class="row g-2 justify-content-center">
+        <div class="col-12 col-md-5">
+          <div class="p-2 bg-white rounded shadow-sm border border-primary text-primary fw-bold small">
+            🚚 Envío GRATIS a todo México vía MexPost
+          </div>
+        </div>
+        <div class="col-12 col-md-5">
+          <div class="p-2 bg-white rounded shadow-sm border border-success text-success fw-bold small">
+            💳 Inicia tu pedido personalizado con el 50% de anticipo
+          </div>
+        </div>
+        <div class="col-12 col-md-5">
+          <div class="p-2 bg-white rounded shadow-sm border fw-bold small" style="border-color: #E1306C !important; color: #E1306C;">
+             <i class="bi bi-instagram"></i> Haz clic en las fotos para ver en Instagram
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container  py-3 mb-1">
+      <small>
+        <a href="#" class="text-black-50 text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modalTerminos">
+          Términos, Condiciones y Políticas de Compra
+        </a>
+      </small>
+    </div>
+  </header>
+
+  <!-- 3. Los Productos -->
+  <main class="container my-5">
+    <h2 class="text-center mb-4">Mis Ofertas de Amigurumis</h2>
+    
+    <div class="row" id="contenedorProductos">
+      <!--JavaScript inserta los cards aquí-->
+    </div>
+
+  </main>
+
+  <!-- 4. Contenedor de Reseñas de Usuarios -->
+  <section class="container my-5" id="seccionComentarios">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8">
+        
+        <!-- Tarjeta Principal -->
+        <div class="card shadow-sm border-0 bg-white rounded-4 overflow-hidden">
+          
+          <!-- Cabecera del Recuadro -->
+          <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3 px-3">
+            <div>
+              <h5 class="mb-0 fw-bold fs-6 fs-sm-5">💬 Opiniones de Clientes</h5>
+              <small class="text-white-50" style="font-size: 0.75rem;">Lo que dicen de nuestros amigurumis</small>
+            </div>
+            <!-- Botón que abre el modal para redactar -->
+            <button class="btn btn-outline-light btn-sm fw-bold px-3 rounded-pill d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#modalCrearComentario">
+              <span>✍️</span>
+              <span class="d-none d-sm-inline">Dejar Reseña</span>
+            </button>
+          </div>
+
+          <!-- Cuerpo del Recuadro (Con scroll independiente para no agrandar la web) -->
+          <div class="card-body p-3 bg-light" id="listaComentarios" style="max-height: 420px; overflow-y: auto;">
+            <!-- comentarios.js renderizará las opiniones aquí -->
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Modal de Escribir Reseña -->
+  <div class="modal fade" id="modalCrearComentario" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title fw-bold fs-6">Escribe tu opinión 🧶</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <form id="formComentario">
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Tu Nombre o Apodo:</label>
+              <input type="text" id="nombreCliente" class="form-control form-control-sm" placeholder="Ej. Daniel, SpiderMan, Anabell" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Calificación:</label>
+              <select id="calificacionCliente" class="form-select form-select-sm" required>
+                <option value="5" selected>⭐⭐⭐⭐⭐ (5/5 Excelente)</option>
+                <option value="4">⭐⭐⭐⭐ (4/5 Muy bueno)</option>
+                <option value="3">⭐⭐⭐ (3/5 Bueno)</option>
+                <option value="2">⭐⭐ (2/5 Regular)</option>
+                <option value="1">⭐ (1/5 Malo)</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Tu Reseña:</label>
+              <textarea id="textoComentario" class="form-control form-control-sm" rows="3" placeholder="¿Qué te pareció el tejido, el acabado o el envío?" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-sm w-100 fw-bold py-2">
+              Publicar Reseña 🚀
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Pie de página -->
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-1">&copy; 2026 Amigurumi Lovers' Shop - Todos los derechos reservados</p>
+      <small>
+        <a href="#" class="text-white-50 text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modalTerminos">
+          Términos, Condiciones y Políticas de Compra
+        </a>
+      </small>
+    </div>
+  </footer>
+
+  <!-- 7. Modal de Compra -->
+  <div class="modal fade" id="modalUniversal" tabindex="-1" aria-labelledby="modalNombre" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title fw-bold" id="modalNombre">Cargando...</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          <img id="modalImagen" src="" class="img-fluid rounded shadow-sm" style="max-height: 180px; object-fit: cover;" alt="Producto">
+        </div>
+        <p id="modalDescripcion" class="text-muted small mb-3"></p>
+        
+        <!-- Personalización opcional -->
+        <div class="mb-3">
+          <label for="modalNotas" class="form-label fw-bold small">🎨 Personalización / Detalle especial:</label>
+          <textarea id="modalNotas" class="form-control form-control-sm" rows="2" placeholder="Ej: Cambiar color de ropa, detalles, etc. (Opcional)"></textarea>
+        </div>
+
+        <!-- Cantidad -->
+        <div class="mb-3">
+          <label for="modalCantidad" class="form-label fw-bold small">Cantidad:</label>
+          <input type="number" id="modalCantidad" class="form-control form-control-sm" value="1" min="1" max="10">
+        </div>
+
+        <!-- Cajas de Totales y Desglose de Días -->
+        <div class="p-3 bg-light rounded border mb-2">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="fw-bold">Total (Envío gratis):</span>
+            <span id="modalPrecioTotal" class="text-success fs-5 fw-bold"></span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center text-muted small mb-2">
+            <span>Anticipo requerido (50%):</span>
+            <span id="modalAnticipo" class="fw-bold text-dark"></span>
+          </div>
+          
+          <hr class="my-2">
+
+          <!-- Desglose de Tiempos Corregido -->
+          <div class="small">
+            <div class="d-flex justify-content-between text-muted mb-1">
+              <span>🧶 Tiempo de fabricación:</span>
+              <strong id="modalTiempoTejido" class="text-dark"></strong>
+            </div>
+            <div class="d-flex justify-content-between text-muted mb-1">
+              <span>📦 Envío estándar (MexPost):</span>
+              <strong class="text-dark">5 a 10 días hábiles</strong>
+            </div>
+            <div class="d-flex justify-content-between text-primary fw-bold pt-1 border-top">
+              <span>🗓️ LLEGADA ESTIMADA TOTAL:</span>
+              <span id="modalTiempoTotalEntrega"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <a id="modalBotonContacto" href="#" target="_blank" class="btn btn-success btn-sm fw-bold">
+            Confirmar por WhatsApp <i class="bi bi-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Modal de Terminos y Condiciones -->
+   <div class="modal fade" id="modalTerminos" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modalTerminosTitulo" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title fw-bold" id="modalTerminosTitulo">📋 Términos, Condiciones y Políticas de Servicio</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-dark small" style="line-height: 1.6;">
+          
+          <h6 class="fw-bold text-primary">1. Naturaleza Artesanal del Producto</h6>
+          <p>Todos nuestros amigurumis y productos tejidos son elaborados 100% a mano de forma artesanal. Por ello, pueden existir ligeras variaciones en tamaño, tono de los hilos o detalles respecto a las fotografías del catálogo, lo cual garantiza que cada pieza es única.</p>
+
+          <h6 class="fw-bold text-primary">2. Sistema de Pagos y Anticipos</h6>
+          <ul>
+            <li>Para iniciar la confección de cualquier pedido personalizado o de catálogo, se requiere un <strong>anticipo obligatorio del 50%</strong> del costo total del producto.</li>
+            <li>El 50% restante deberá ser liquidado una vez finalizada la pieza (se enviará fotografía/video de la pieza terminada) y <strong>antes de realizar el envío</strong>.</li>
+            <li><strong>Verificación de Pago:</strong> No se iniciará el tejido ni se entregará ningún producto a paquetería hasta que el pago se encuentre totalmente acreditado y reflejado en la cuenta bancaria emisora. No se aceptan fichas de depósito ni comprobantes de transferencia en estado "pendiente" o sin fondos confirmados.</li>
+          </ul>
+
+          <h6 class="fw-bold text-primary">3. Cancelaciones y Reembolsos</h6>
+          <ul>
+            <li>El cliente dispone de un lapso máximo de <strong>24 horas</strong> tras realizar el anticipo para solicitar la cancelación y devolución de su dinero.</li>
+            <li>Pasadas las 24 horas, el anticipo del 50% <strong>no será reembolsable bajo ninguna circunstancia</strong>, ya que dicho monto cubre la adquisición de insumos y la reserva del tiempo de trabajo del artesano.</li>
+          </ul>
+
+          <h6 class="fw-bold text-primary">4. Tiempos de Elaboración y Envíos</h6>
+          <ul>
+            <li>Los tiempos de elaboración son estimados y varían según la cantidad de piezas y la complejidad del diseño.</li>
+            <li>Los envíos estándar se realizan a través del servicio postal <strong>MexPost (Correos de México)</strong> con un tiempo estimado de entrega de 5 a 10 días hábiles una vez depositado el paquete.</li>
+            <li>Una vez entregado el paquete en la oficina de paquetería y proporcionado el número de guía rastreable al cliente, la responsabilidad sobre tiempos de traslado, extravíos o demoras recae en la empresa de mensajería.</li>
+          </ul>
+
+          <h6 class="fw-bold text-primary">5. Personalizaciones</h6>
+          <p>Cualquier modificación o detalle especial (cambio de color, accesorios adicionales, etc.) debe especificarse al momento de realizar la cotización inicial por WhatsApp. Cambios solicitados una vez iniciado el proceso de tejido pueden generar un costo adicional o retrasar la fecha de entrega acordada.</p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark btn-sm fw-bold" data-bs-dismiss="modal">Entendido y Acepto</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. JS de Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- 10. codigo que me lleve a mi archivo JavaScript principal -->
+
+  <script src="Atributos/js/main.js"></script>
+  <script src="Atributos/js/comentarios.js"></script>
+</body>
+</html>

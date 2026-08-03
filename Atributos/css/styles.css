@@ -1,0 +1,82 @@
+/* ===================================================
+   ESTILOS PERSONALIZADOS - TIENDA DE AMIGURUMIS
+   =================================================== */
+
+/* Fondo del Encabezado Principal */
+.hero-header {
+  background-color: #e7f1ff;
+}
+
+/* 1. Tarjeta contenedora de altura fija y flexible */
+.card-amigurumi {
+  border: none !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-amigurumi:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-img-link {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* 2. FORZAR LA MISMA ALTURA A LAS 3 FOTOS (Corrige la foto del gatito) */
+.card-img-top, 
+.card-img-link img {
+  width: 100% !important;
+  height: 320px !important;       /* Todas las fotos medirán exactamente 320px */
+  object-fit: cover !important;  /* Reencuadra recortando lo sobrante sin deformar */
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+.card-img-link:hover img {
+  transform: scale(1.04);
+  opacity: 0.95;
+}
+
+/* 3. ALINEACIÓN DEL CONTENIDO Y PRECIOS AL FONDO */
+.card-amigurumi .card-body {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important; /* Empuja el precio al fondo */
+  flex-grow: 1 !important;
+}
+
+/* Estilos de texto */
+.card-amigurumi .card-text {
+  color: #6c757d;
+  font-size: 0.95rem;
+}
+
+.card-amigurumi .precio {
+  font-weight: bold;
+  color: #198754;
+  font-size: 1.15rem;
+  margin-bottom: 0;
+  margin-top: auto; /* Garantiza que todos los precios estén en el mismo nivel */
+}
+
+/* Altura personalizada y texto más grande */
+.navbar {
+  min-height: 80px; /* Ajusta este valor si la quieres más alta */
+}
+
+.navbar-brand {
+  font-size: 1.4rem;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.1rem;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}

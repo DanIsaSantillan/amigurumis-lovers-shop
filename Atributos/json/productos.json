@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "nombre": "Conejito Amigurumi",
+        "precio": 750,
+        "diasBase": 4,
+        "descripcion": "Un tierno conejtito blanco que te acompañe en tus sueños o tus abrazos, 20 a 25 cm altura",
+        "imagen": "Atributos/FotosAmigurumis/ConejoAmigurumi.jpeg",
+        "instagram": "https://www.instagram.com/p/DUTrJCBkUOS/?img_index=1"
+    },
+    {
+        "id":2,
+        "nombre": "Rosa a Crochet",
+        "precio": 400,
+        "diasBase": 4,
+        "descripcion": "Una hermosa rosa de crochet ideal para regalar o adornar tu escritorio, 15 a 20 cm de diametro",
+        "imagen": "Atributos/FotosAmigurumis/RosasCrochet.jpeg",
+        "instagram": "https://www.instagram.com/p/DYKk25Skckm/?img_index=1"
+    },
+    {
+        "id":3,
+        "nombre": "Gatito Dormilon",
+        "precio": 500,
+        "diasBase": 3,
+        "descripcion": "Un lindo gatito durmiente que puedes acurrucar en tus manos, adornar tu escritorio o tu almohada, 10 a 15 cm de largo",
+        "imagen": "Atributos/FotosAmigurumis/GatitoAmigurumi.jpeg",
+        "instagram": "https://www.instagram.com/p/DS5_ok7ET41/?img_index=1"
+    },
+    {
+        "id":4,
+        "nombre": "Angel Amigurumi",
+        "precio": 700,
+        "diasBase": 5,
+        "descripcion": "Una linda angel de la guarda que te cuide y acompañe, 15 a 20 cm de altura",
+        "imagen": "Atributos/FotosAmigurumis/AngelAmigurumi.jpeg",
+        "instagram": "https://www.instagram.com/p/DS5_Nwfka-Y/?img_index=5"
+    },
+    {
+        "id":5,
+        "nombre": "Virgen Amigurumi",
+        "precio": 750,
+        "diasBase": 5,
+        "descripcion": "La virgencita que te acompañe y cuide, 15 a 20 cm de altura",
+        "imagen": "Atributos/FotosAmigurumis/VirgenAmigurumi.jpeg",
+        "instagram": "https://www.instagram.com/p/DS5_Nwfka-Y/?img_index=1"
+    },
+    {
+        "id":6,
+        "nombre": "Muñeca de Bella",
+        "precio": 1000,
+        "diasBase": 7,
+        "descripcion": "Una hermosa muñeca de la Princesa Bella con vestido de doble capa y perlas doradas, 20 a 25 cm de altura",
+        "imagen": "Atributos/FotosAmigurumis/MuñecaBella.jpeg",
+        "instagram": "https://www.instagram.com/p/DRnAxMdEfbQ/?img_index=1"
+    }
+]
