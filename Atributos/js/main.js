@@ -74,18 +74,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const telefonoWhatsApp = "524493463574";
         let detalleNotas = notas !== '' ? `\n🎨 *Personalización:* ${notas}` : '';
 
+        // Formato limpio pegado a la izquierda para evitar espacios raros en WhatsApp
         const mensaje = `¡Hola! Me interesa encargar el siguiente amigurumi:
 
-                        📌 *Producto:* ${nombreProducto}
-                        🧶 *Cantidad:* ${cantidad} unidad(es)${detalleNotas}
-                        💰 *Total (Envío MexPost gratis):* $ ${precioTotal} MXN
-                        💳 *Anticipo requerido (50%):* $ ${anticipo} MXN
+📌 *Producto:* ${nombreProducto}
+🧶 *Cantidad:* ${cantidad} unidad(es)${detalleNotas}
+💰 *Total (Envío MexPost gratis):* $ ${precioTotal} MXN
+💳 *Anticipo requerido (50%):* $ ${anticipo} MXN
 
-                        ⏱️ *Fabricación:* ${diasTejidoMin}-${diasTejidoMax} días hábiles
-                        📦 *Envío MexPost:* 5-10 días hábiles
-                        🗓️ *Tiempo total estimado:* ${totalMin}-${totalMax} días hábiles
+⏱️ *Fabricación:* ${diasTejidoMin}-${diasTejidoMax} días hábiles
+📦 *Envío MexPost:* 5-10 días hábiles
+🗓️ *Tiempo total estimado:* ${totalMin}-${totalMax} días hábiles
 
-                        ¿Me podrías proporcionar los datos para realizar la transferencia del anticipo?`;
+¿Me podrías proporcionar los datos para realizar la transferencia del anticipo?`;
 
         const urlWhatsApp = `https://api.whatsapp.com/send?phone=${telefonoWhatsApp}&text=${encodeURIComponent(mensaje)}`;
         const botonPedido = document.getElementById('modalBotonContacto');
