@@ -1,16 +1,28 @@
+// 1. Configuración de Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCaPUhEUEQsWO7hcqCuPQVKfK5lMvmOUTM",
+  authDomain: "amigurumis-lovers-shop.firebaseapp.com",
+  projectId: "amigurumis-lovers-shop",
+  storageBucket: "amigurumis-lovers-shop.firebasestorage.app",
+  messagingSenderId: "511788785721",
+  appId: "1:511788785721:web:a9d52ddf4d45587556ede8"
+};
+
+// Inicializar Firebase y Firestore
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 document.addEventListener('DOMContentLoaded', () => {
   const formComentario = document.getElementById('formComentario');
   const listaComentarios = document.getElementById('listaComentarios');
 
   if (!formComentario || !listaComentarios) return; // Protección si la sección no existe en el HTML
 
-  // 1. Cargar comentarios guardados desde el navegador (localStorage)
-  let comentariosGuardados = JSON.parse(localStorage.getItem('misComentariosAmigurumis')) || [];
-
-  function renderizarComentarios() {
+  // 2. Escuchar los comentarios en TIEMPO REAL desde Firestore
+  db.collection("comentarios").orderBy("fechaOrden", "desc").onSnapshot((snapshot) => {
     listaComentarios.innerHTML = '';
 
-    if (comentariosGuardados.length === 0) {
+    if (snapshot.empty) {
       listaComentarios.innerHTML = `
         <div class="text-center text-muted small fst-italic p-3 bg-light rounded border">
           Aún no hay comentarios publicados. ¡Sé la primera en probar la sección! ✨
@@ -19,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    comentariosGuardados.forEach((comentario, index) => {
+    snapshot.forEach((doc) => {
+      const comentario = doc.data();
+      const docId = doc.id; // ID único del documento en Firestore
       const estrellas = '⭐'.repeat(comentario.estrellas);
       const tarjeta = document.createElement('div');
       tarjeta.className = 'card p-3 shadow-sm border-0 bg-light mb-3';
@@ -39,10 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       } else {
-        // Botón de respuesta con candado de seguridad
+        // Botón de respuesta con candado de seguridad (pasa el ID único de Firestore)
         htmlRespuesta = `
           <div class="mt-2 text-end">
-            <button onclick="responderComoCreadora(${index})" class="btn btn-outline-dark btn-sm py-0 px-2" style="font-size: 0.75rem;">
+            <button onclick="responderComoCreadora('${docId}')" class="btn btn-outline-dark btn-sm py-0 px-2" style="font-size: 0.75rem;">
               💬 Responder como Creadora
             </button>
           </div>
@@ -61,9 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       listaComentarios.appendChild(tarjeta);
     });
-  }
+  }, (error) => {
+    console.error("Error al escuchar comentarios:", error);
+  });
 
-  // 2. Enviar un nuevo comentario de cliente
+  // 3. Enviar un nuevo comentario a Firestore
   formComentario.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -77,37 +93,46 @@ document.addEventListener('DOMContentLoaded', () => {
       estrellas,
       texto,
       fecha,
+      fechaOrden: firebase.firestore.FieldValue.serverTimestamp(), // Para ordenar de más reciente a más antiguo
       respuestaCreadora: null,
       fechaRespuesta: null
     };
 
-    comentariosGuardados.unshift(nuevoComentario);
-    localStorage.setItem('misComentariosAmigurumis', JSON.stringify(comentariosGuardados));
-
-    renderizarComentarios();
-    formComentario.reset();
+    // Guardar en la base de datos Firestore
+    db.collection("comentarios").add(nuevoComentario)
+      .then(() => {
+        formComentario.reset();
+      })
+      .catch((error) => {
+        console.error("Error al guardar comentario:", error);
+        alert("Hubo un detalle al publicar tu comentario. Por favor intenta de nuevo.");
+      });
   });
 
-  // 3. Función de respuesta EXCLUSIVA para la Creadora (Protegida por PIN)
-  window.responderComoCreadora = function(index) {
+  // 4. Función de respuesta EXCLUSIVA para la Creadora (Protegida por PIN en la nube)
+  window.responderComoCreadora = function(docId) {
     const pinIngresado = prompt("🔒 Área exclusiva. Ingresa tu PIN de Creadora:");
 
-    // Verificación de clave
     if (pinIngresado === "280900") {
       const respuesta = prompt("¡PIN correcto! Escribe tu respuesta pública:");
       if (respuesta && respuesta.trim() !== "") {
         const fechaRespuesta = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
-        
-        comentariosGuardados[index].respuestaCreadora = respuesta.trim();
-        comentariosGuardados[index].fechaRespuesta = fechaRespuesta;
-        
-        localStorage.setItem('misComentariosAmigurumis', JSON.stringify(comentariosGuardados));
-        renderizarComentarios();
+
+        // Actualizar la reseña directamente en Firestore
+        db.collection("comentarios").doc(docId).update({
+          respuestaCreadora: respuesta.trim(),
+          fechaRespuesta: fechaRespuesta
+        })
+        .then(() => {
+          console.log("Respuesta de Creadora guardada con éxito.");
+        })
+        .catch((error) => {
+          console.error("Error al responder:", error);
+          alert("No se pudo guardar la respuesta.");
+        });
       }
     } else if (pinIngresado !== null) {
       alert("❌ PIN incorrecto. Acceso denegado.");
     }
   };
-
-  renderizarComentarios();
 });
