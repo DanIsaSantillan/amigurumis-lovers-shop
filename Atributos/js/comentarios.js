@@ -12,13 +12,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+// Variables de Seguridad Anti-Fuerza Bruta
+let intentosFallidos = 0;
+let bloqueoHasta = 0;
+let modoCreadoraActivado = false; // Estado del modo administración
+
 document.addEventListener('DOMContentLoaded', () => {
   const formComentario = document.getElementById('formComentario');
   const listaComentarios = document.getElementById('listaComentarios');
 
-  if (!formComentario || !listaComentarios) return; // Protección si la sección no existe en el HTML
+  if (!formComentario || !listaComentarios) return;
 
-  // 2. Escuchar los comentarios en TIEMPO REAL desde Firestore
+  // 2. Escuchar comentarios en TIEMPO REAL
   db.collection("comentarios").orderBy("fechaOrden", "desc").onSnapshot((snapshot) => {
     listaComentarios.innerHTML = '';
 
@@ -33,12 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     snapshot.forEach((doc) => {
       const comentario = doc.data();
-      const docId = doc.id; // ID único del documento en Firestore
+      const docId = doc.id;
       const estrellas = '⭐'.repeat(comentario.estrellas);
       const tarjeta = document.createElement('div');
       tarjeta.className = 'card p-3 shadow-sm border-0 bg-light mb-3';
 
-      // HTML de la respuesta de la Creadora (si ya respondiste)
       let htmlRespuesta = '';
       if (comentario.respuestaCreadora) {
         htmlRespuesta = `
@@ -52,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="text-dark small m-0 fst-italic">"${comentario.respuestaCreadora}"</p>
           </div>
         `;
-      } else {
-        // Botón de respuesta con candado de seguridad (pasa el ID único de Firestore)
+      } else if (modoCreadoraActivado) {
+        // EL BOTÓN SOLO APARECE SI ACTIVASTE EL MODO CREADORA
         htmlRespuesta = `
           <div class="mt-2 text-end">
             <button onclick="responderComoCreadora('${docId}')" class="btn btn-outline-dark btn-sm py-0 px-2" style="font-size: 0.75rem;">
@@ -79,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error("Error al escuchar comentarios:", error);
   });
 
-  // 3. Enviar un nuevo comentario a Firestore
+  // 3. Enviar un nuevo comentario
   formComentario.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -93,12 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
       estrellas,
       texto,
       fecha,
-      fechaOrden: firebase.firestore.FieldValue.serverTimestamp(), // Para ordenar de más reciente a más antiguo
+      fechaOrden: firebase.firestore.FieldValue.serverTimestamp(),
       respuestaCreadora: null,
       fechaRespuesta: null
     };
 
-    // Guardar en la base de datos Firestore
     db.collection("comentarios").add(nuevoComentario)
       .then(() => {
         formComentario.reset();
@@ -109,30 +112,54 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  // 4. Función de respuesta EXCLUSIVA para la Creadora (Protegida por PIN en la nube)
+  // 4. Función de respuesta protegida con Bloqueo Anti-Fuerza Bruta
   window.responderComoCreadora = function(docId) {
-    const pinIngresado = prompt("🔒 Área exclusiva. Ingresa tu PIN de Creadora:");
+    const respuesta = prompt("Escribe tu respuesta pública como Creadora:");
+    if (respuesta && respuesta.trim() !== "") {
+      const fechaRespuesta = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
+
+      db.collection("comentarios").doc(docId).update({
+        respuestaCreadora: respuesta.trim(),
+        fechaRespuesta: fechaRespuesta
+      })
+      .then(() => {
+        console.log("Respuesta guardada con éxito.");
+      })
+      .catch((error) => {
+        console.error("Error al responder:", error);
+        alert("No se pudo guardar la respuesta.");
+      });
+    }
+  };
+
+  // 5. TRUCO DE CREADORA: Activar modo administración presionado una combinación o un botón discreto
+  window.activarModoCreadora = function() {
+    const ahora = Date.now();
+
+    // Comprobar si está bloqueado por demasiados intentos
+    if (ahora < bloqueoHasta) {
+      const minRestantes = Math.ceil((bloqueoHasta - ahora) / 1000 / 60);
+      alert(`⚠️ Demasiados intentos fallidos. Sistema bloqueado. Intenta en ${minRestantes} minuto(s).`);
+      return;
+    }
+
+    const pinIngresado = prompt("🔒 Área de administración. Ingresa tu PIN:");
 
     if (pinIngresado === "280900") {
-      const respuesta = prompt("¡PIN correcto! Escribe tu respuesta pública:");
-      if (respuesta && respuesta.trim() !== "") {
-        const fechaRespuesta = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' });
-
-        // Actualizar la reseña directamente en Firestore
-        db.collection("comentarios").doc(docId).update({
-          respuestaCreadora: respuesta.trim(),
-          fechaRespuesta: fechaRespuesta
-        })
-        .then(() => {
-          console.log("Respuesta de Creadora guardada con éxito.");
-        })
-        .catch((error) => {
-          console.error("Error al responder:", error);
-          alert("No se pudo guardar la respuesta.");
-        });
-      }
+      intentosFallidos = 0;
+      modoCreadoraActivado = true;
+      alert("✅ Modo Creadora Activado. Ahora verás los botones de responder en las reseñas.");
+      // Forzar recarga visual para mostrar los botones
+      location.reload(); 
     } else if (pinIngresado !== null) {
-      alert("❌ PIN incorrecto. Acceso denegado.");
+      intentosFallidos++;
+      if (intentosFallidos >= 3) {
+        bloqueoHasta = Date.now() + (5 * 60 * 1000); // Bloqueo de 5 minutos
+        intentosFallidos = 0;
+        alert("❌ PIN incorrecto. Acceso bloqueado durante 5 minutos.");
+      } else {
+        alert(`❌ PIN incorrecto. Te quedan ${3 - intentosFallidos} intento(s).`);
+      }
     }
   };
 });
