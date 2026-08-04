@@ -140,4 +140,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     cargarProductos();
+
+    // Funcionalidad para compartir la página web
+    const btnCompartir = document.getElementById('btnCompartir');
+
+    if (btnCompartir) {
+        btnCompartir.addEventListener('click', async () => {
+            const datosCompartir = {
+                title: "Amigurumi Lovers' Shop",
+                text: "¡Mira esta tienda increíble de amigurumis hechos a mano!",
+                url: window.location.href
+            };
+
+            // Si el navegador soporta el menú nativo de compartir (ej. celulares)
+            if (navigator.share) {
+                try {
+                    await navigator.share(datosCompartir);
+                } catch (err) {
+                    console.log('Compartir cancelado o no soportado:', err);
+                }
+            } else {
+                // Si está en PC, simplemente copia el link al portapapeles
+                navigator.clipboard.writeText(window.location.href);
+                alert('¡Enlace copiado al portapapeles! Ya puedes pegarlo y compartirlo. 🧶✨');
+            }
+        });
+    }
 });
