@@ -36,6 +36,10 @@
         <a href="#seccionComentarios" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
           <span>💬</span> <span class="d-none d-sm-inline">Reseñas</span>
         </a>
+        <!-- Botón de compartir -->
+        <button id="btnCompartir" class="btn btn-dark btn-outline-light btn-sm rounded-pill fw-bold">
+            <i class="bi bi-share-fill"></i><span class="d-none d-sm-inline ms-1">Compartir</span>
+        </button>
       </div>
 
     </div>
@@ -162,7 +166,11 @@
   <!-- 6. Pie de página -->
   <footer class="bg-dark text-white text-center py-4 mt-5">
     <div class="container">
-      <p class="mb-1">&copy; 2026 Amigurumi Lovers' Shop - Todos los derechos reservados</p>
+      <p class="mb-1">
+        &copy; 2026 Amigurumi Lovers' Shop - Todos los derechos reservados
+        <!-- Candado discreto para activar tu modo Creadora -->
+        <span onclick="activarModoCreadora()" style="cursor: pointer; opacity: 0.1;" title="Acceso Creadora" class="ms-1">🔒</span>
+      </p>
       <small>
         <a href="#" class="text-white-50 text-decoration-underline" data-bs-toggle="modal" data-bs-target="#modalTerminos">
           Términos, Condiciones y Políticas de Compra
